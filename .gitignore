@@ -1,0 +1,3 @@
+/.venv/
+/.env
+/condition_data.csv
