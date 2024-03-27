@@ -10,8 +10,8 @@ def main():
     create_condition()
     file_path = 'product_ids_template.xlsx'
     products_ids = extract_ids_from_excel(file_path=file_path)
-    # default_last_update = set_default_last_update()
-    default_last_update = '2024-03-24T13:06:31Z'
+    default_last_update = set_default_last_update()
+    # default_last_update = '2024-03-24T13:06:31Z'
     for pid in products_ids:
         set_condition(pid, default_last_update)
 
