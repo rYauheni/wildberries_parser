@@ -2,13 +2,6 @@ import requests
 
 from condition_data import get_condition, update_condition
 
-# products_ids = [54978961, 18902880, 63956972, 39374520]
-products_ids = [18902880]
-
-REVIEWS_NUMBER_TAG_ID = 'a-Comments'
-
-LAST = '2024-03-20T17:02:51Z'
-
 
 def get_product_detail_url(pid: int) -> str:
     url = f'https://card.wb.ru/cards/detail?nm={pid}'
