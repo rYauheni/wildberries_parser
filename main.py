@@ -1,6 +1,6 @@
 from time import sleep
 
-from condition_data import create_condition, set_condition, get_condition, set_default_last_update, update_condition
+from condition_data import create_condition, set_condition, set_default_last_update
 from parser import get_messages
 from parse_excel import extract_ids_from_excel
 from telegram_bot import send_message
