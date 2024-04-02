@@ -1,7 +1,5 @@
 import requests
 
-from app_state_data import get_app_state_data, update_app_state_data
-
 
 def get_product_detail_url(pid: int) -> str:
     url = f'https://card.wb.ru/cards/detail?nm={pid}'
@@ -53,9 +51,9 @@ def parse_product_data(pid: int) -> (int, None):
     return product_data
 
 
-def get_messages(pid: int) -> (list, None):
+def get_messages(pid: int, app_state_service) -> (list, None):
     root = parse_product_root(pid)
-    last_update = get_app_state_data(pid)
+    last_update = app_state_service.get_app_state_data(pid)
     if not root:
         return
 
@@ -71,7 +69,7 @@ def get_messages(pid: int) -> (list, None):
                     mark = feedback['productValuation']
                     last_data = feedback['createdDate']
                     if last_data > last_update:
-                        update_app_state_data(pid, last_update=last_data)
+                        app_state_service.update_app_state_data(pid=pid, last_update=last_data)
                     if 1 <= mark <= 4:
                         text = feedback['text']
                         product_data = parse_product_data(pid)
