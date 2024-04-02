@@ -4,7 +4,7 @@ from app_state_data import create_app_state_data, set_app_state_data, set_defaul
 from exceptions.exceptions import FileError
 from exceptions.error_messages import FILE_NOT_FOUND_MESSAGE
 from parser import get_messages
-from parse_excel import get_excel_file_path, extract_ids_from_excel
+from excel_utils import get_excel_file_path, extract_ids_from_excel
 from telegram_bot import send_message
 
 
