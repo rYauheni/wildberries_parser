@@ -1,6 +1,6 @@
 import requests
 
-from condition_data import get_condition, update_condition
+from app_state_data import get_app_state_data, update_app_state_data
 
 
 def get_product_detail_url(pid: int) -> str:
@@ -55,7 +55,7 @@ def parse_product_data(pid: int) -> (int, None):
 
 def get_messages(pid: int) -> (list, None):
     root = parse_product_root(pid)
-    last_update = get_condition(pid)
+    last_update = get_app_state_data(pid)
     if not root:
         return
 
@@ -71,7 +71,7 @@ def get_messages(pid: int) -> (list, None):
                     mark = feedback['productValuation']
                     last_data = feedback['createdDate']
                     if last_data > last_update:
-                        update_condition(pid, last_update=last_data)
+                        update_app_state_data(pid, last_update=last_data)
                     if 1 <= mark <= 4:
                         text = feedback['text']
                         product_data = parse_product_data(pid)

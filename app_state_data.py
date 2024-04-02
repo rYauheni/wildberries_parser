@@ -2,19 +2,19 @@ import csv
 from datetime import datetime, timezone
 
 
-def create_condition():
+def create_app_state_data():
     with open('condition_data.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['pid', 'last_update'])
 
 
-def set_condition(pid: int, last_update: str):
+def set_app_state_data(pid: int, last_update: str):
     with open("condition_data.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([pid, last_update])
 
 
-def get_condition(pid: int) -> (str, None):
+def get_app_state_data(pid: int) -> (str, None):
     with open('condition_data.csv', mode='r', newline='') as file:
         reader = csv.reader(file)
         for row in reader:
@@ -22,7 +22,7 @@ def get_condition(pid: int) -> (str, None):
                 return row[1]
 
 
-def update_condition(pid: int, last_update: str):
+def update_app_state_data(pid: int, last_update: str):
 
     rows = []
     with open('condition_data.csv', mode='r', newline='') as file:

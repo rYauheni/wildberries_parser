@@ -1,6 +1,6 @@
 from time import sleep
 
-from condition_data import create_condition, set_condition, set_default_last_update
+from app_state_data import create_app_state_data, set_app_state_data, set_default_last_update
 from exceptions.exceptions import FileError
 from exceptions.error_messages import FILE_NOT_FOUND_MESSAGE
 from parser import get_messages
@@ -9,7 +9,7 @@ from telegram_bot import send_message
 
 
 def main():
-    create_condition()
+    create_app_state_data()
     file_path = get_excel_file_path()
     try:
         products_ids = extract_ids_from_excel(file_path=file_path)
@@ -19,7 +19,7 @@ def main():
     default_last_update = set_default_last_update()
     # default_last_update = '2024-03-24T13:06:31Z'
     for pid in products_ids:
-        set_condition(pid, default_last_update)
+        set_app_state_data(pid, default_last_update)
 
     while True:
         for pid in products_ids:
