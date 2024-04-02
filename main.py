@@ -1,15 +1,21 @@
 from time import sleep
 
 from condition_data import create_condition, set_condition, set_default_last_update
+from exceptions.exceptions import FileError
+from exceptions.error_messages import FILE_NOT_FOUND_MESSAGE
 from parser import get_messages
-from parse_excel import extract_ids_from_excel
+from parse_excel import get_excel_file_path, extract_ids_from_excel
 from telegram_bot import send_message
 
 
 def main():
     create_condition()
-    file_path = 'product_ids_template.xlsx'
-    products_ids = extract_ids_from_excel(file_path=file_path)
+    file_path = get_excel_file_path()
+    try:
+        products_ids = extract_ids_from_excel(file_path=file_path)
+    except FileError:
+        send_message(FILE_NOT_FOUND_MESSAGE)
+        return
     default_last_update = set_default_last_update()
     # default_last_update = '2024-03-24T13:06:31Z'
     for pid in products_ids:
@@ -27,3 +33,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# from parse_excel import get_excel_file_path
+#
+# print(get_excel_file_path())

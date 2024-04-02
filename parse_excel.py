@@ -1,4 +1,20 @@
+import sys
+
 import openpyxl
+
+from settings import DEFAULT_EXCEL_FILE_PATH
+from exceptions.exceptions import FileError
+
+
+def get_excel_file_path() -> str:
+    args = sys.argv
+    if '--excel_file_path' not in args:
+        excel_file_path = DEFAULT_EXCEL_FILE_PATH
+    else:
+        excel_file_path_index = args.index("--excel_file_path") + 1
+        excel_file_path = args[excel_file_path_index]
+
+    return excel_file_path
 
 
 def extract_ids_from_excel(file_path: str) -> list:
@@ -11,8 +27,8 @@ def extract_ids_from_excel(file_path: str) -> list:
             if row[0] is not None:
                 ids.append(row[0])
 
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
+    except Exception:
+        raise FileError
 
     return ids
 
