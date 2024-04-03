@@ -1,6 +1,6 @@
 import requests
 
-from exceptions.exceptions import RootError, FeedbackDataError
+from exceptions.exceptions import RootError, ProductDataError, FeedbackDataError
 from objects.feedback import Feedback
 from objects.product import Product
 
@@ -42,11 +42,12 @@ def parse_product_root(pid: int) -> int:
 def parse_product_data(product):
     product_detail_url = get_product_detail_url(pid=product.id)
     product_detail = requests.get(product_detail_url)
-    if product_detail.status_code == 200:
-        product_data = product_detail.json()
-        product.name = (str(product_data['data']['products'][0]['brand']) + ' ' +
-                        str(product_data['data']['products'][0]['name']))
-        product.rating = product_data['data']['products'][0]['reviewRating']
+    if not product_detail.status_code == 200:
+        raise ProductDataError
+    product_data = product_detail.json()
+    product.name = (str(product_data['data']['products'][0]['brand']) + ' ' +
+                    str(product_data['data']['products'][0]['name']))
+    product.rating = product_data['data']['products'][0]['reviewRating']
 
 
 # def get_messages(pid: int, app_state_service) -> (list, None):
@@ -86,23 +87,19 @@ def parse_product_data(product):
 
 def get_product_data(product):
     parse_product_data(product)
-    try:
-        product.root = parse_product_root(product.id)
-    except RootError:
-        pass
+    product.root = parse_product_root(product.id)
 
     product_feedback_urls = get_product_feedback_urls(product.root)
     for url in product_feedback_urls:
-        try:
-            get_negative_feedback_data(product=product, url=url)
-        except FeedbackDataError:
-            pass
+        get_negative_feedback_data(product=product, url=url)
 
 
 def get_negative_feedback_data(product, url):
     last_update = product.last_update
     try:
         product_feedbacks = requests.get(url).json()['feedbacks']
+        if not product_feedbacks:
+            return
         new_feedbacks = [fb for fb in product_feedbacks if fb['createdDate'] >= last_update]
         for new_feedback in new_feedbacks:
             feedback = Feedback()

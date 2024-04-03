@@ -13,7 +13,7 @@ class FileError(Exception):
             return 'FileError:  No matching file found.'
 
 
-class RootError(ValueError):
+class RootError(Exception):
 
     def __init__(self, *args):
         if args:
@@ -26,6 +26,21 @@ class RootError(ValueError):
             return f'RootError: Product root not found. Detail: {self.message}.'
         else:
             return 'RootError:  Product root not found.'
+
+
+class ProductDataError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f'ProductDataError: Product data not found. Detail: {self.message}.'
+        else:
+            return 'ProductDataError:  Product data not found.'
 
 
 class FeedbackDataError(Exception):
@@ -41,3 +56,18 @@ class FeedbackDataError(Exception):
             return f'FeedbackDataError: Feedback not found. Detail: {self.message}.'
         else:
             return 'FeedbackDataError:  Feedback not found.'
+
+
+class NotificationError(Exception):
+
+    def __init__(self, *args):
+        if args:
+            self.message = args
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f'NotificationError: The application could not send the message. Detail: {self.message}.'
+        else:
+            return 'NotificationError:  The application could not send the message.'

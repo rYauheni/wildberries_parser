@@ -1,6 +1,10 @@
 from excel_utils import get_excel_file_path, extract_ids_from_excel
-from exceptions.error_messages import FILE_NOT_FOUND_MESSAGE
-from exceptions.exceptions import FileError
+from exceptions.error_messages import (FILE_NOT_FOUND_MESSAGE,
+                                       ROOT_NOT_FOUND_MESSAGE,
+                                       PRODUCT_DATA_NOT_FOUND_MESSAGE,
+                                       FEEDBACK_DATA_FOUND_MESSAGE,
+                                       EXCEPTION_MESSAGE,)
+from exceptions.exceptions import FileError, RootError, ProductDataError, FeedbackDataError, NotificationError
 from notification_services.notification_messages import create_messages_list
 from objects.product import Product
 from parser import get_product_data
@@ -21,22 +25,32 @@ def main():
     # last_update = app_state_service.set_default_last_update()
     last_update = '2024-03-31T13:06:31Z'
     for pid in products_ids:
-        product = Product(id=pid)
-        app_state_service.set_app_state_data(pid, last_update)
-        product.last_update = app_state_service.get_app_state_data(pid=product.id)
-        get_product_data(product=product)
-        messages_list = create_messages_list(product=product)
+        try:
+            product = Product(id=pid)
+            app_state_service.set_app_state_data(pid, last_update)
+            product.last_update = app_state_service.get_app_state_data(pid=product.id)
+            get_product_data(product=product)
+            messages_list = create_messages_list(product=product)
+        except RootError:
+            notification_service.send_message(message=ROOT_NOT_FOUND_MESSAGE)
+            continue
+        except ProductDataError:
+            notification_service.send_message(message=PRODUCT_DATA_NOT_FOUND_MESSAGE)
+            continue
+        except FeedbackDataError:
+            notification_service.send_message(message=FEEDBACK_DATA_FOUND_MESSAGE)
+            continue
+        except Exception:
+            notification_service.send_message(message=EXCEPTION_MESSAGE)
+            continue
 
-        for message in messages_list:
-            notification_service.send_message(message=message)
+        if messages_list:
+            for message in messages_list:
+                try:
+                    notification_service.send_message(message=message)
+                except NotificationError:
+                    continue
 
-
-    # for pid in products_ids:
-    #     messages = get_messages(pid=pid, app_state_service=app_state_service)
-    #     if messages:
-    #         for message in messages:
-    #             send_message(message=message)
-    # print('====DONE====')
 
 
 if __name__ == '__main__':
