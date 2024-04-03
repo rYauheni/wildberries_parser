@@ -33,14 +33,22 @@ def main():
         logger.info(f'ERROR. File {file_path} not found or the file could not be parsed/')
         return
     # last_update = app_state_service.set_default_last_update()
-    last_update = '2024-03-31T13:06:31Z'
+    default_last_update = '2024-03-31T13:06:31Z'
     for pid in products_ids:
         try:
             product = Product(id=pid)
-            app_state_service.set_app_state_data(pid, last_update)
+            print(app_state_service.get_app_state_data(pid))
+            if not app_state_service.get_app_state_data(pid):
+                app_state_service.set_app_state_data(pid, default_last_update)
             product.last_update = app_state_service.get_app_state_data(pid=product.id)
             get_product_data(product=product)
             messages_list = create_messages_list(product=product)
+
+            # ENTOMU MESTO ZDEZ?????????
+            for fb in product.feedbacks:
+                if fb.date >= product.last_update:
+                    app_state_service.update_app_state_data(pid=product.id, last_update=fb.date)
+
             logger.info(f'Product {pid} has been parsed.')
         except RootError:
             notification_service.send_message(message=ROOT_NOT_FOUND_MESSAGE)

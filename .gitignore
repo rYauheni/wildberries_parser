@@ -1,4 +1,4 @@
 /.venv/
 /.env
 /condition_data.csv
-/change_log.txt
+/condition_data.json

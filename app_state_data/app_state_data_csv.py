@@ -1,4 +1,5 @@
 import csv
+import os
 from datetime import datetime, timezone
 
 from app_state_data.app_state_data_storage import AppStateDataStorage
@@ -9,22 +10,30 @@ class CSVAppStateDataService(AppStateDataStorage):
         self.data_file = data_file
 
     def create_app_state_data(self):
-        with open(self.data_file, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['pid', 'last_update'])
+        if not os.path.exists(self.data_file):
+            with open(self.data_file, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['pid', 'last_update'])
 
     def set_app_state_data(self, pid: int, last_update: str):
+
+        if self.get_app_state_data(pid=pid):
+            self.update_app_state_data(pid=pid, last_update=last_update)
+            return
+
         with open(self.data_file, mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([pid, last_update])
 
     def get_app_state_data(self, pid: int) -> (str, None):
-        with open(self.data_file, mode='r', newline='') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row[0] == str(pid):
-                    return row[1]
-        return None
+        try:
+            with open(self.data_file, mode='r', newline='') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    if row[0] == str(pid):
+                        return row[1]
+        except IndexError:
+            return None
 
     def update_app_state_data(self, pid: int, last_update: str):
         rows = []
