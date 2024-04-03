@@ -2,8 +2,8 @@ from excel_utils import get_excel_file_path, extract_ids_from_excel
 from exceptions.error_messages import (FILE_NOT_FOUND_MESSAGE,
                                        ROOT_NOT_FOUND_MESSAGE,
                                        PRODUCT_DATA_NOT_FOUND_MESSAGE,
-                                       FEEDBACK_DATA_FOUND_MESSAGE,
-                                       EXCEPTION_MESSAGE,)
+                                       FEEDBACK_DATA_NOT_FOUND_MESSAGE,
+                                       EXCEPTION_MESSAGE, )
 from exceptions.exceptions import FileError, RootError, ProductDataError, FeedbackDataError, NotificationError
 from notification_services.notification_messages import create_messages_list
 from objects.product import Product
@@ -38,7 +38,7 @@ def main():
             notification_service.send_message(message=PRODUCT_DATA_NOT_FOUND_MESSAGE)
             continue
         except FeedbackDataError:
-            notification_service.send_message(message=FEEDBACK_DATA_FOUND_MESSAGE)
+            notification_service.send_message(message=FEEDBACK_DATA_NOT_FOUND_MESSAGE)
             continue
         except Exception:
             notification_service.send_message(message=EXCEPTION_MESSAGE)

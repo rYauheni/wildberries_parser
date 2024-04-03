@@ -8,7 +8,7 @@ PRODUCT_DATA_NOT_FOUND_MESSAGE = ('The application did not find a product data '
                                   'or the product data could not be parsed.\n'
                                   'Contact the application administrator.')
 
-FEEDBACK_DATA_FOUND_MESSAGE = ('The application did not find a product feedback data '
+FEEDBACK_DATA_NOT_FOUND_MESSAGE = ('The application did not find a product feedback data '
                                'or the product feedback data could not be parsed.\n'
                                'Contact the application administrator.')
 
