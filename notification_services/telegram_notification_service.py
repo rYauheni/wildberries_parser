@@ -18,7 +18,7 @@ class TelegramNotificationService(NotificationStorage):
         url = f'https://api.telegram.org/bot{self.token}/sendMessage'
         params = {'chat_id': self.chat_id, 'text': message}
         response = requests.post(url, params=params)
-        if not response.status_code != 200:
+        if response.status_code != 200:
             raise NotificationError(response.status_code)
 
 
