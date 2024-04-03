@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from app_state_data.app_state_data_storage import AppStateDataStorage
 
 
-class CSVAppStateDataStorage(AppStateDataStorage):
+class CSVAppStateDataService(AppStateDataStorage):
     def __init__(self, data_file='condition_data.csv'):
         self.data_file = data_file
 
