@@ -43,12 +43,8 @@ def send_messages(messages_list: list, product: Product):
 def create_messages_list(product) -> list:
     messages_list = []
     try:
-
-        product.last_update = app_state_service.get_app_state_data(pid=product.id)
         get_product_data(product=product)
         messages_list = fill_messages_list(product=product, messages_list=messages_list)
-
-        app_state_service.update_app_state_data(pid=product.id, last_update=product.last_update)
         logger.info(f'Product {product.id} has been parsed.')
     except ProductDataError:
         notification_service.send_message(message=PRODUCT_DATA_NOT_FOUND_MESSAGE)
@@ -79,8 +75,9 @@ def main():
         product = Product(id=pid)
         if not app_state_service.get_app_state_data(pid=product.id):
             app_state_service.set_app_state_data(pid=product.id, last_update=default_last_update)
-
+        product.last_update = app_state_service.get_app_state_data(pid=product.id)
         messages_list = create_messages_list(product=product)
+        app_state_service.update_app_state_data(pid=product.id, last_update=product.last_update) # WARNING! Update state data must be after create_messages_list()
 
         send_messages(messages_list=messages_list, product=product)
 
