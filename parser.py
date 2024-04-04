@@ -1,6 +1,6 @@
 import requests
 
-from exceptions.exceptions import RootError, ProductDataError, FeedbackDataError
+from exceptions.exceptions import FeedbackDataError
 from objects.feedback import Feedback
 
 
