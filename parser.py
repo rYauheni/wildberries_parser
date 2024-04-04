@@ -2,7 +2,6 @@ import requests
 
 from exceptions.exceptions import RootError, ProductDataError, FeedbackDataError
 from objects.feedback import Feedback
-from objects.product import Product
 
 
 def get_product_detail_url(pid: int) -> str:
@@ -48,41 +47,6 @@ def parse_product_data(product):
     product.name = (str(product_data['data']['products'][0]['brand']) + ' ' +
                     str(product_data['data']['products'][0]['name']))
     product.rating = product_data['data']['products'][0]['reviewRating']
-
-
-# def get_messages(pid: int, app_state_service) -> (list, None):
-#     root = parse_product_root(pid)
-#     last_update = app_state_service.get_app_state_data(pid)
-#     if not root:
-#         return
-#
-#     product_feedback_urls = get_product_feedback_urls(root)
-#     for url in product_feedback_urls:
-#         try:
-#             product_feedback = requests.get(url)
-#             messages = []
-#             if product_feedback.status_code == 200:
-#                 feedbacks = product_feedback.json()['feedbacks']
-#                 new_feedbacks = [fb for fb in feedbacks if fb['createdDate'] >= last_update]
-#                 for feedback in new_feedbacks:
-#                     mark = feedback['productValuation']
-#                     last_data = feedback['createdDate']
-#                     if last_data > last_update:
-#                         app_state_service.update_app_state_data(pid=pid, last_update=last_data)
-#                     if 1 <= mark <= 4:
-#                         text = feedback['text']
-#                         product_data = parse_product_data(pid)
-#                         try:
-#                             product_name = product_data['product_name']
-#                             product_rating = product_data['product_rating']
-#                         except KeyError:
-#                             product_name, product_rating = None, None
-#                         msg = (f'Негативный отзыв/Товар: {product_name}/SKU: {pid}/Оценка: {mark}/Отзыв: {text}/'
-#                                f'Текущий рейтинг товара: {product_rating}')
-#                         messages.append(msg)
-#             return messages
-#         except TypeError:
-#             return
 
 
 def get_product_data(product):

@@ -11,7 +11,6 @@ from notification_services.notification_messages import create_messages_list
 from objects.product import Product
 from parser import get_product_data
 from settings import APP_STATE_SERVICE, NOTIFICATION_SERVICE
-# from notification_services.telegram_notification_service import send_message
 
 
 logging.basicConfig(
@@ -37,8 +36,7 @@ def main():
     for pid in products_ids:
         try:
             product = Product(id=pid)
-            print(app_state_service.get_app_state_data(pid))
-            if not app_state_service.get_app_state_data(pid):
+            if not app_state_service.get_app_state_data(pid=product.id):
                 app_state_service.set_app_state_data(pid, default_last_update)
             product.last_update = app_state_service.get_app_state_data(pid=product.id)
             get_product_data(product=product)
