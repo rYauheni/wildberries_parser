@@ -2,11 +2,10 @@ import logging
 
 from excel_utils import get_excel_file_path, extract_ids_from_excel
 from exceptions.error_messages import (FILE_NOT_FOUND_MESSAGE,
-                                       ROOT_NOT_FOUND_MESSAGE,
                                        PRODUCT_DATA_NOT_FOUND_MESSAGE,
                                        FEEDBACK_DATA_NOT_FOUND_MESSAGE,
                                        EXCEPTION_MESSAGE, )
-from exceptions.exceptions import FileError, RootError, ProductDataError, FeedbackDataError, NotificationError
+from exceptions.exceptions import FileError, ProductDataError, FeedbackDataError, NotificationError
 from notification_services.notification_messages import (fill_messages_list,
                                                          create_not_found_negative_feedbacks_message)
 from objects.product import Product
@@ -51,9 +50,6 @@ def create_messages_list(product) -> list:
 
         app_state_service.update_app_state_data(pid=product.id, last_update=product.last_update)
         logger.info(f'Product {product.id} has been parsed.')
-    except RootError:
-        notification_service.send_message(message=ROOT_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. Product {product.id} root not found or could not be parsed.')
     except ProductDataError:
         notification_service.send_message(message=PRODUCT_DATA_NOT_FOUND_MESSAGE)
         logger.info(f'ERROR. Product {product.id} data not found or could not be parsed.')
