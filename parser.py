@@ -56,14 +56,16 @@ def get_negative_feedback_data(product, url):
         product_feedbacks = requests.get(url).json()['feedbacks']
         if not product_feedbacks:
             return
-        new_feedbacks = [fb for fb in product_feedbacks if fb['createdDate'] >= last_update]
-        for new_feedback in new_feedbacks:
+        # new_feedbacks = [fb for fb in product_feedbacks if fb.is_new(last_update=last_update)]
+        new_update = last_update
+        for pf in product_feedbacks:
             feedback = Feedback()
-            feedback.mark = new_feedback['productValuation']
-            feedback.text = new_feedback['text']
-            feedback.date = new_feedback['createdDate']
-            if feedback.is_negative():
+            feedback.get_feedback_data_from_jason(feedback_detail=pf)
+            if feedback.is_negative() and feedback.is_new(last_update=last_update):
                 product.feedbacks.append(feedback)
+                if feedback.date > new_update:
+                    new_update = feedback.date
+            product.last_update = new_update
 
     except Exception:
         raise FeedbackDataError

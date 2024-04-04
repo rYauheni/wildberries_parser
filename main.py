@@ -7,7 +7,8 @@ from exceptions.error_messages import (FILE_NOT_FOUND_MESSAGE,
                                        FEEDBACK_DATA_NOT_FOUND_MESSAGE,
                                        EXCEPTION_MESSAGE, )
 from exceptions.exceptions import FileError, RootError, ProductDataError, FeedbackDataError, NotificationError
-from notification_services.notification_messages import create_messages_list
+from notification_services.notification_messages import (create_messages_list,
+                                                         create_not_found_negative_feedbacks_message)
 from objects.product import Product
 from parser import get_product_data
 from settings import APP_STATE_SERVICE, NOTIFICATION_SERVICE
@@ -42,11 +43,7 @@ def main():
             get_product_data(product=product)
             messages_list = create_messages_list(product=product)
 
-            # ENTOMU MESTO ZDEZ?????????
-            for fb in product.feedbacks:
-                if fb.date >= product.last_update:
-                    app_state_service.update_app_state_data(pid=product.id, last_update=fb.date)
-
+            app_state_service.update_app_state_data(pid=product.id, last_update=product.last_update)
             logger.info(f'Product {pid} has been parsed.')
         except RootError:
             notification_service.send_message(message=ROOT_NOT_FOUND_MESSAGE)
@@ -73,6 +70,13 @@ def main():
                 except NotificationError:
                     logger.info(f'ERROR. Product {pid}. Message did not be sent.')
                     continue
+        else:
+            try:
+                message = create_not_found_negative_feedbacks_message(product=product)
+                notification_service.send_message(message=message)
+                logger.info(f'Product {pid}. Message was sent successfully.')
+            except NotificationError:
+                logger.info(f'ERROR. Product {pid}. Message did not be sent.')
 
 
 if __name__ == '__main__':

@@ -13,3 +13,11 @@ def create_messages_list(product: Product) -> list:
                        f'Current rating: {product.rating}.\n')
             messages_list.append(message)
     return messages_list
+
+
+def create_not_found_negative_feedbacks_message(product=Product) -> str:
+    message = (f'Not found new negative messages for:\n'
+               f'Product name: {product.name}.\n'
+               f'SKU (ID): {product.id}.\n'
+               f'Current rating: {product.rating}.\n')
+    return message
