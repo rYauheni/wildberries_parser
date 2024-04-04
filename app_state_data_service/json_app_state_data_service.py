@@ -2,8 +2,10 @@ import json
 import os
 from datetime import datetime, timezone
 
+from app_state_data_service.app_state_data_service import AppStateDataService
 
-class JSONAppStateDataService:
+
+class JSONAppStateDataService(AppStateDataService):
     def __init__(self, data_file='condition_data.json'):
         self.data_file = data_file
 

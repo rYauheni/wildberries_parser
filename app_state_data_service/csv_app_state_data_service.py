@@ -2,10 +2,10 @@ import csv
 import os
 from datetime import datetime, timezone
 
-from app_state_data.app_state_data_storage import AppStateDataStorage
+from app_state_data_service.app_state_data_service import AppStateDataService
 
 
-class CSVAppStateDataService(AppStateDataStorage):
+class CSVAppStateDataService(AppStateDataService):
     def __init__(self, data_file='condition_data.csv'):
         self.data_file = data_file
 

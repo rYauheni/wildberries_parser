@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class NotificationStorage(ABC):
+class NotificationService(ABC):
     @abstractmethod
     def send_message(self, message):
         pass

@@ -4,12 +4,12 @@ import requests
 from dotenv import load_dotenv
 
 from exceptions.exceptions import NotificationError
-from notification_services.notification_storage import NotificationStorage
+from notification_services.notification_service import NotificationService
 
 load_dotenv()
 
 
-class TelegramNotificationService(NotificationStorage):
+class TelegramNotificationService(NotificationService):
     def __init__(self):
         self.token = os.environ.get('TOKEN')
         self.chat_id = os.environ.get('CHAT_ID')

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class AppStateDataStorage(ABC):
+class AppStateDataService(ABC):
     @abstractmethod
     def create_app_state_data(self):
         pass
