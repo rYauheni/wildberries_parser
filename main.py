@@ -2,6 +2,7 @@ import logging
 
 from excel_utils import get_excel_file_path, extract_ids_from_excel
 from exceptions.error_messages import (FILE_NOT_FOUND_MESSAGE,
+                                       IDS_NOT_FOUND,
                                        PRODUCT_DATA_NOT_FOUND_MESSAGE,
                                        FEEDBACK_DATA_NOT_FOUND_MESSAGE,
                                        EXCEPTION_MESSAGE, )
@@ -59,16 +60,25 @@ def create_messages_list(product) -> list:
     return messages_list
 
 
-def main():
-    app_state_service.create_app_state_data()
-    file_path = get_excel_file_path()
+def get_products_ids(file_path: str) -> list:
+    products_ids = []
     try:
         products_ids = extract_ids_from_excel(file_path=file_path)
         logger.info(f'Extract ids from {file_path}.')
     except FileError:
         notification_service.send_message(message=FILE_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. File {file_path} not found or the file could not be parsed/')
-        return
+        logger.info(f'ERROR. File {file_path} not found or the file could not be parsed.')
+
+    if not products_ids:
+        notification_service.send_message(message=IDS_NOT_FOUND)
+        logger.info(f'No ids found in the file {file_path}.')
+    return products_ids
+
+
+def main():
+    app_state_service.create_app_state_data()
+    file_path = get_excel_file_path()
+    products_ids = get_products_ids(file_path=file_path)
     # last_update = app_state_service.set_default_last_update()
     default_last_update = '2024-03-31T13:06:31Z'
     for pid in products_ids:
@@ -77,7 +87,8 @@ def main():
             app_state_service.set_app_state_data(pid=product.id, last_update=default_last_update)
         product.last_update = app_state_service.get_app_state_data(pid=product.id)
         messages_list = create_messages_list(product=product)
-        app_state_service.update_app_state_data(pid=product.id, last_update=product.last_update) # WARNING! Update state data must be after create_messages_list()
+        app_state_service.update_app_state_data(pid=product.id,
+                                                last_update=product.last_update)  # WARNING! Update state data must be after create_messages_list()
 
         send_messages(messages_list=messages_list, product=product)
 
