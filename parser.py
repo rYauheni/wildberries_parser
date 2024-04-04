@@ -14,13 +14,10 @@ def get_product_feedback_urls(root: int) -> list:
     return urls
 
 
-def parse_product_root(pid: int) -> int:
-    product_detail_url = get_product_detail_url(pid=pid)
-    product_detail = requests.get(product_detail_url)
-    if product_detail.status_code != 200:
-        raise RootError
-    root = product_detail.json()['data']['products'][0]['root']
-    return root
+# def parse_product_root(product):
+#     product_detail_url = get_product_detail_url(pid=product.id)
+#     product_detail = requests.get(product_detail_url)
+#     product.get_product_root_from_json(product_detail=product_detail)
 
 
 # def parse_feedback_count(pid: int) -> (int, None):
@@ -41,17 +38,12 @@ def parse_product_root(pid: int) -> int:
 def parse_product_data(product):
     product_detail_url = get_product_detail_url(pid=product.id)
     product_detail = requests.get(product_detail_url)
-    if product_detail.status_code != 200:
-        raise ProductDataError
-    product_data = product_detail.json()
-    product.name = (str(product_data['data']['products'][0]['brand']) + ' ' +
-                    str(product_data['data']['products'][0]['name']))
-    product.rating = product_data['data']['products'][0]['reviewRating']
+    product.get_product_data_from_json(product_detail=product_detail)
 
 
 def get_product_data(product):
     parse_product_data(product)
-    product.root = parse_product_root(product.id)
+    # parse_product_root(product=product)
 
     product_feedback_urls = get_product_feedback_urls(product.root)
     for url in product_feedback_urls:
