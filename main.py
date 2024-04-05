@@ -79,7 +79,7 @@ def main():
     app_state_service.create_app_state_data()
     file_path = get_excel_file_path()
     products_ids = get_products_ids(file_path=file_path)
-    # last_update = app_state_service.set_default_last_update()
+    # default_last_update = app_state_service.set_default_last_update()
     default_last_update = '2024-03-31T13:06:31Z'
     for pid in products_ids:
         product = Product(id=pid)
