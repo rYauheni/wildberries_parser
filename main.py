@@ -10,7 +10,7 @@ from exceptions.exceptions import FileError, ProductDataError, FeedbackDataError
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_messages import (fill_messages_list,
                                                          create_not_found_negative_feedbacks_message)
-from objects.product import Product
+from models.product import Product
 from parser import get_product_data
 from settings import APP_STATE_SERVICE, NOTIFICATION_SERVICES
 

@@ -1,7 +1,7 @@
 import requests
 
 from exceptions.exceptions import FeedbackDataError
-from objects.feedback import Feedback
+from models.feedback import Feedback
 
 
 def get_product_detail_url(pid: int) -> str:

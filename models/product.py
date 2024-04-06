@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from exceptions.exceptions import ProductDataError
-from objects.feedback import Feedback
+from models.feedback import Feedback
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from objects.product import Product
+from models.product import Product
 
 
 def fill_messages_list(product: Product, messages_list: list) -> list:
