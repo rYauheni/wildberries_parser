@@ -12,19 +12,22 @@ from notification_services.notification_messages import (fill_messages_list,
                                                          create_not_found_negative_feedbacks_message)
 from models.product import Product
 from parser import get_product_data
-from settings import APP_STATE_SERVICE, NOTIFICATION_SERVICES
+from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
+from settings import app_state_service, notification_services_list
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-app_state_service = APP_STATE_SERVICE()
+app_state_service = app_state_service()
 
-notification_services = [service() for service in NOTIFICATION_SERVICES]
+notification_services = [service() for service in notification_services_list]
 
 notification_manager = NotificationManager()
 notification_manager.add_services(services=notification_services)
+
+product_id_access_service = ExcelProductIDAccessService()
 
 
 def send_message(message: str, pid: int):
@@ -64,25 +67,24 @@ def create_messages_list(product) -> list:
     return messages_list
 
 
-def get_products_ids(file_path: str) -> list:
+def get_products_ids() -> list:
     products_ids = []
     try:
-        products_ids = extract_ids_from_excel(file_path=file_path)
-        logger.info(f'Extract ids from {file_path}.')
+        products_ids = product_id_access_service.get_ids()
+        logger.info(f'Extract ids from {product_id_access_service.source}.')
     except FileError:
         notification_manager.send_message(message=FILE_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. File {file_path} not found or the file could not be parsed.')
+        logger.info(f'ERROR. File {product_id_access_service.source} not found or the file could not be parsed.')
 
     if not products_ids:
         notification_manager.send_message(message=IDS_NOT_FOUND)
-        logger.info(f'No ids found in the file {file_path}.')
+        logger.info(f'No ids found in the file {product_id_access_service.source}.')
     return products_ids
 
 
 def main():
     app_state_service.create_app_state_data()
-    file_path = get_excel_file_path()
-    products_ids = get_products_ids(file_path=file_path)
+    products_ids = get_products_ids()
     # default_last_update = app_state_service.set_default_last_update()
     default_last_update = '2024-04-02T13:06:31Z'
     for pid in products_ids:
