@@ -5,4 +5,4 @@ APP_STATE_SERVICE = JSONAppStateDataService
 
 DEFAULT_EXCEL_FILE_PATH = 'product_ids.xlsx'
 
-NOTIFICATION_SERVICE = TelegramNotificationService
+NOTIFICATION_SERVICES = (TelegramNotificationService, )
