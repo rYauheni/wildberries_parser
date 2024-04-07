@@ -26,7 +26,7 @@ def send_message(message: str, pid: int, notification_manager: NotificationManag
         notification_manager.send_message(message=message)
         logger.info(f'Product {pid}. Message was sent successfully.')
     except NotificationError:
-        logger.info(f'ERROR. Product {pid}. Message did not be sent.')
+        logger.error(f'ERROR. Product {pid}. Message did not be sent.')
 
 
 def send_messages(messages_list: list, product: Product, notification_manager: NotificationManager):
@@ -47,13 +47,13 @@ def create_messages_list(product: Product, notification_manager: NotificationMan
         logger.info(f'Product {product.id} has been parsed.')
     except ProductDataError:
         notification_manager.send_message(message=PRODUCT_DATA_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. Product {product.id} data not found or could not be parsed.')
+        logger.error(f'ERROR. Product {product.id} data not found or could not be parsed.')
     except FeedbackDataError:
         notification_manager.send_message(message=FEEDBACK_DATA_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. Product {product.id} feedback data not found or could not be parsed.')
+        logger.error(f'ERROR. Product {product.id} feedback data not found or could not be parsed.')
     except Exception as e:
         notification_manager.send_message(message=EXCEPTION_MESSAGE)
-        logger.info(f'ERROR. Product {product.id} raised exception {e}.')
+        logger.error(f'ERROR. Product {product.id} raised exception {e}.')
 
     return messages_list
 
@@ -65,18 +65,18 @@ def get_products_ids(prodict_service: ExcelProductIDAccessService, notification_
         logger.info(f'Extract ids from {prodict_service.source}.')
     except FileError:
         notification_manager.send_message(message=FILE_NOT_FOUND_MESSAGE)
-        logger.info(f'ERROR. File {prodict_service.source} not found or the file could not be parsed.')
+        logger.error(f'ERROR. File {prodict_service.source} not found or the file could not be parsed.')
 
     if not products_ids:
         notification_manager.send_message(message=IDS_NOT_FOUND)
-        logger.info(f'No ids found in the file {prodict_service.source}.')
+        logger.error(f'No ids found in the file {prodict_service.source}.')
     return products_ids
 
 
 def main():
     app_state_service = JSONAppStateDataService()
 
-    notification_services = (TelegramNotificationService(), )
+    notification_services = (TelegramNotificationService(),)
     notification_manager = NotificationManager()
     notification_manager.add_services(services=notification_services)
 
