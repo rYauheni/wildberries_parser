@@ -14,6 +14,7 @@ from notification_services.telegram_notification_service import TelegramNotifica
 from models.product import Product
 from parser import get_product_data
 from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
+from product_id_access_services.product_id_access_utils import get_products_ids
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -58,21 +59,6 @@ def create_messages_list(product: Product, notification_manager: NotificationMan
     return messages_list
 
 
-def get_products_ids(prodict_service: ExcelProductIDAccessService, notification_manager: NotificationManager) -> list:
-    products_ids = []
-    try:
-        products_ids = prodict_service.get_ids()
-        logger.info(f'Extract ids from {prodict_service.source}.')
-    except FileError:
-        notification_manager.send_message(message=FILE_NOT_FOUND_MESSAGE)
-        logger.error(f'ERROR. File {prodict_service.source} not found or the file could not be parsed.')
-
-    if not products_ids:
-        notification_manager.send_message(message=IDS_NOT_FOUND)
-        logger.error(f'No ids found in the file {prodict_service.source}.')
-    return products_ids
-
-
 def main():
     app_state_service = JSONAppStateDataService()
 
@@ -86,7 +72,7 @@ def main():
     products_ids = get_products_ids(prodict_service=product_id_access_service,
                                     notification_manager=notification_manager)
     # default_last_update = app_state_service.set_default_last_update()
-    default_last_update = '2024-04-02T13:06:31Z'
+    default_last_update = '2024-04-04T13:06:31Z'
     for pid in products_ids:
         product = Product(id=pid)
         if not app_state_service.get_app_state_data(pid=product.id):
