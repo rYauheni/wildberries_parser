@@ -1,16 +1,10 @@
-import logging
-
 from exceptions.error_messages import PRODUCT_DATA_NOT_FOUND_MESSAGE, FEEDBACK_DATA_NOT_FOUND_MESSAGE, EXCEPTION_MESSAGE
 from exceptions.exceptions import NotificationError, ProductDataError, FeedbackDataError
+from logger_utils.logger_utils import logger
 from models.product import Product
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_messages import create_not_found_negative_feedbacks_message, fill_messages_list
 from parser import get_product_data
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-logger = logging.getLogger(__name__)
 
 
 def send_message(message: str, pid: int, notification_manager: NotificationManager):

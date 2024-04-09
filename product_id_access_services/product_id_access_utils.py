@@ -5,10 +5,12 @@ from exceptions.exceptions import FileError
 from notification_services.notification_manager import NotificationManager
 from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
+# )
+# logger = logging.getLogger(__name__)
+
+from logger_utils.logger_utils import logger
 
 
 def get_products_ids(prodict_service: ExcelProductIDAccessService, notification_manager: NotificationManager) -> list:
