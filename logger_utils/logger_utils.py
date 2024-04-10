@@ -6,13 +6,13 @@ class ColoredFormatter(logging.Formatter):
               'CRITICAL': '\033[95m'}
 
     def format(self, record):
-        log_fmt = f"{self.COLORS.get(record.levelname, '')}%(message)s\033[0m"
+        color = self.COLORS.get(record.levelname, '')
+        log_fmt = f"{color}%(asctime)s - {color}%(name)s - {color}%(levelname)s - {color}%(message)s\033[0m"
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.DEBUG,
     handlers=[logging.StreamHandler()]
 )
