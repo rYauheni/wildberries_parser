@@ -7,7 +7,7 @@ class Feedback:
     text: str = None
     date: str = None
 
-    def get_feedback_data_from_jason(self, feedback_detail):
+    def get_feedback_data_from_json(self, feedback_detail):
         self.mark = feedback_detail['productValuation']
         self.text = feedback_detail['text']
         self.date = feedback_detail['createdDate']

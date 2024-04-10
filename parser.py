@@ -4,11 +4,13 @@ from exceptions.exceptions import FeedbackDataError
 from models.feedback import Feedback
 
 
+###
 def get_product_detail_url(pid: int) -> str:
     url = f'https://card.wb.ru/cards/detail?nm={pid}'
     return url
 
 
+###
 def get_product_feedback_urls(root: int) -> list:
     urls = [f'https://feedbacks{i}.wb.ru/feedbacks/v1/{root}' for i in range(1, 3)]
     return urls
@@ -34,7 +36,7 @@ def get_product_feedback_urls(root: int) -> list:
 #
 #     return feedback_count
 
-
+###
 def parse_product_data(product):
     product_detail_url = get_product_detail_url(pid=product.id)
     product_detail = requests.get(product_detail_url)
@@ -60,7 +62,7 @@ def get_negative_feedback_data(product, url):
         new_update = last_update
         for pf in product_feedbacks:
             feedback = Feedback()
-            feedback.get_feedback_data_from_jason(feedback_detail=pf)
+            feedback.get_feedback_data_from_json(feedback_detail=pf)
             if feedback.is_negative() and feedback.is_new(last_update=last_update):
                 product.feedbacks.append(feedback)
                 if feedback.date > new_update:

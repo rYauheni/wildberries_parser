@@ -1,21 +1,23 @@
 from exceptions.error_messages import PRODUCT_DATA_NOT_FOUND_MESSAGE, FEEDBACK_DATA_NOT_FOUND_MESSAGE, EXCEPTION_MESSAGE
 from exceptions.exceptions import NotificationError, ProductDataError, FeedbackDataError
 from logger_utils.logger_utils import logger
+from models.message import Message, MessagesList
 from models.product import Product
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_messages import create_not_found_negative_feedbacks_message, fill_messages_list
 from parser import get_product_data
 
 
-def send_message(message: str, pid: int, notification_manager: NotificationManager):
+def send_message(message: Message, pid: int, notification_manager: NotificationManager):
     try:
-        notification_manager.send_message(message=message)
+        notification_manager.send_message(message=message.text)
         logger.info(f'Product {pid}. Message was sent successfully.')
     except NotificationError:
         logger.error(f'ERROR. Product {pid}. Message did not be sent.')
 
 
-def send_messages(messages_list: list, product: Product, notification_manager: NotificationManager):
+def send_messages(messages_list: MessagesList, product: Product, notification_manager: NotificationManager):
+    messages_list = messages_list.messages_list
     if messages_list:
         for message in messages_list:
             send_message(message=message, pid=product.id, notification_manager=notification_manager)
