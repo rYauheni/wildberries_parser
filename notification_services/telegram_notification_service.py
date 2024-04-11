@@ -15,8 +15,11 @@ class TelegramNotificationService(NotificationService):
         self.chat_id = os.environ.get('CHAT_ID')
 
     def send_message(self, message):
-        url = f'https://api.telegram.org/bot{self.token}/sendMessage'
-        params = {'chat_id': self.chat_id, 'text': message}
-        response = requests.post(url, params=params)
-        if response.status_code != 200:
-            raise NotificationError(response.status_code)
+        try:
+            url = f'https://api.telegram.org/bot{self.token}/sendMessage'
+            params = {'chat_id': self.chat_id, 'text': message}
+            response = requests.post(url, params=params)
+            if response.status_code != 200:
+                raise NotificationError(response.status_code)
+        except Exception:
+            raise NotificationError

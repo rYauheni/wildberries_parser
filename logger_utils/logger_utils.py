@@ -7,7 +7,7 @@ class ColoredFormatter(logging.Formatter):
 
     def format(self, record):
         color = self.COLORS.get(record.levelname, '')
-        log_fmt = f"{color}%(asctime)s - {color}%(name)s - {color}%(levelname)s - {color}%(message)s\033[0m"
+        log_fmt = f"{color}%(asctime)s - {color}%(filename)s - {color}%(levelname)s - {color}%(message)s\033[0m"
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 

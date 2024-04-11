@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 
+from exceptions.exceptions import NotificationError
+from logger_utils.logger_utils import logger
 from models.product import Product, Status
+from notification_services.notification_manager import NotificationManager
 
 
 @dataclass
@@ -78,3 +81,10 @@ class MessagesList:
             case Status.UNKNOWN_E:
                 message.set_e_message_for_for_unknown_e()
         self.messages_list.append(message)
+
+    def send_messages(self, notification_manager: NotificationManager):
+        for message in self.messages_list:
+            try:
+                notification_manager.send_message(message=message.text)
+            except NotificationError:
+                raise
