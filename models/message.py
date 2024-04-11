@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.product import Product
+from models.product import Product, Status
 
 
 @dataclass
@@ -23,6 +23,23 @@ class Message:
                      f'SKU (ID): {self.product.id}.\n'
                      f'Current rating: {self.product.rating}.\n')
 
+    def set_e_message_for_for_product_data_not_found(self):
+        self.text = (f'Product SKU (ID): {self.product.id}.\n'
+                     f'The application did not find a product data '
+                     f'or the product data could not be parsed.\n'
+                     f'Contact the application administrator.')
+
+    def set_e_message_for_for_feedback_data_not_found(self):
+        self.text = (f'Product SKU (ID): {self.product.id}.\n'
+                     f'The application did not find a product feedback data '
+                     f'or the product feedback data could not be parsed.\n'
+                     f'Contact the application administrator.')
+
+    def set_e_message_for_for_unknown_e(self):
+        self.text = (f'Product SKU (ID): {self.product.id}.\n'
+                     f'The application raised an exception.\n'
+                     f'Contact the application administrator.')
+
 
 @dataclass
 class MessagesList:
@@ -31,14 +48,33 @@ class MessagesList:
         self.messages_list: list = []
 
     def fill_messages_list(self):
+        if self.product.status != Status.GOOD:
+            self.create_message_for_exception()
+            return
         feedbacks = self.product.feedbacks
-        if feedbacks:
-            for feedback in feedbacks:
-                message = Message(product=self.product)
-                message.set_message_text_for_n_feedback(feedback=feedback)
-                self.messages_list.append(message)
+        if not feedbacks:
+            self.create_message_for_feedback_nor_found()
+            return
+        self.create_messages_for_feedbacks(feedbacks=feedbacks)
 
-        else:
+    def create_messages_for_feedbacks(self, feedbacks):
+        for feedback in feedbacks:
             message = Message(product=self.product)
-            message.set_message_text_for_not_found_n_feedback()
+            message.set_message_text_for_n_feedback(feedback=feedback)
             self.messages_list.append(message)
+
+    def create_message_for_feedback_nor_found(self):
+        message = Message(product=self.product)
+        message.set_message_text_for_not_found_n_feedback()
+        self.messages_list.append(message)
+
+    def create_message_for_exception(self):
+        message = Message(product=self.product)
+        match self.product.status:
+            case Status.PRODUCT_DNF:
+                message.set_e_message_for_for_product_data_not_found()
+            case Status.FEEDBACK_DNF:
+                message.set_e_message_for_for_feedback_data_not_found()
+            case Status.UNKNOWN_E:
+                message.set_e_message_for_for_unknown_e()
+        self.messages_list.append(message)

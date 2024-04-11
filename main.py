@@ -1,6 +1,7 @@
 from app_state_data_service.json_app_state_data_service import JSONAppStateDataService
+from exceptions.exceptions import ProductDataError, FeedbackDataError
 from models.message import MessagesList
-from models.product import Product
+from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_utils import create_messages_list, send_messages
 from notification_services.telegram_notification_service import TelegramNotificationService
@@ -31,7 +32,14 @@ def main():
         # messages_list = create_messages_list(product=product, notification_manager=notification_manager)
 
         # get_product_data(product=product)
-        product.parse_product_data()
+        try:
+            product.parse_product_data()
+        except ProductDataError:
+            product.status = Status.PRODUCT_DNF
+        except FeedbackDataError:
+            product.status = Status.FEEDBACK_DNF
+        except Exception as e:
+            product.status = Status.UNKNOWN_E
 
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()

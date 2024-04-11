@@ -1,14 +1,22 @@
 from dataclasses import dataclass, field
-
+from enum import Enum
 import requests
 
 from exceptions.exceptions import ProductDataError, FeedbackDataError
 from models.feedback import Feedback
 
 
+class Status(Enum):
+    GOOD = 'good'
+    PRODUCT_DNF = 'product_dnf'
+    FEEDBACK_DNF = 'feedback_dnf'
+    UNKNOWN_E = 'unknown_e'
+
+
 @dataclass
 class Product:
     id: int
+    status: Status = Status.GOOD
     url: str = None
     root: int = None
     name: str = None
@@ -58,7 +66,13 @@ class Product:
 
     def parse_product_data(self):
         self.get_product_detail_url()
-        product_detail = requests.get(self.url)
+        try:
+            product_detail = requests.get(self.url)
+        except Exception:
+            raise ProductDataError
         self.get_product_data_from_json(product_detail=product_detail)
         feedbacks_urls = self.get_feedbacks_urls()
-        self.get_negative_feedbacks(feedbacks_urls=feedbacks_urls)
+        try:
+            self.get_negative_feedbacks(feedbacks_urls=feedbacks_urls)
+        except Exception:
+            raise FeedbackDataError
