@@ -22,6 +22,8 @@ class TelegramNotificationService(NotificationService):
             params = {'chat_id': self.chat_id, 'text': message}
             response = requests.post(url, params=params)
             if response.status_code == 429:
+                # The Telegram API has a limit on the number of messages sent (status_code=429).
+                # If this limit is exceeded, Telegram does not allow sending messages for 40 seconds.
                 time.sleep(41)
                 requests.post(url, params=params)
             if response.status_code not in (200, 429):
