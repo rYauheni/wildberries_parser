@@ -5,7 +5,7 @@ from models.message import Message, MessagesList
 from models.product import Product
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_messages import create_not_found_negative_feedbacks_message, fill_messages_list
-from parser import get_product_data
+from archive.parser import get_product_data
 
 
 def send_message(message: Message, pid: int, notification_manager: NotificationManager):

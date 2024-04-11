@@ -4,7 +4,6 @@ from models.product import Product
 from notification_services.notification_manager import NotificationManager
 from notification_services.notification_utils import create_messages_list, send_messages
 from notification_services.telegram_notification_service import TelegramNotificationService
-from parser import get_product_data
 from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
 from product_id_access_services.product_id_access_utils import get_products_ids
 
