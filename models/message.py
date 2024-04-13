@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from exceptions.exceptions import NotificationError
-from logger_utils.logger_utils import logger
 from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 
