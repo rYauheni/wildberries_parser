@@ -51,3 +51,8 @@ ___
    ```commandline
    python3 main.py
    ```
+
+3. Run tests
+   ```commandline
+   python -m unittest discover -s tests -p "test_*.py" -v
+   ```
