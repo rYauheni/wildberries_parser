@@ -5,7 +5,7 @@ from exceptions.exceptions import ProductDataError, FeedbackDataError
 from models.product import Product
 
 
-class TestProductMethods(unittest.TestCase):
+class TestProduct(unittest.TestCase):
 
     def test_get_product_data_from_json_valid(self):
         mock_product_detail = MagicMock()
