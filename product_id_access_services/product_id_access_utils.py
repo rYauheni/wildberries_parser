@@ -12,9 +12,9 @@ def get_products_ids(product_service: ExcelProductIDAccessService, notification_
         logger.info(f'Extract ids from {product_service.source}.')
     except FileError:
         notification_manager.send_message(message=FILE_NOT_FOUND_MESSAGE)
-        logger.error(f'ERROR. File {product_service.source} not found or the file could not be parsed.')
+        logger.error(f'ERROR. Source {product_service.source} not found or the source could not be parsed.')
     else:
         if not products_ids:
             notification_manager.send_message(message=IDS_NOT_FOUND)
-            logger.error(f'No ids found in the file {product_service.source}.')
+            logger.error(f'No ids found in the source {product_service.source}.')
     return products_ids

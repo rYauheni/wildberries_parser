@@ -43,13 +43,13 @@ ___
    for Windows:
 
    ```commandline
-   python main.py --excel_file_path <file_path>
+   python main.py --ids_source <file_path>
    ```
 
    for Linux:
 
    ```commandline
-   python3 main.py --excel_file_path <file_path>
+   python3 main.py --ids_source <file_path>
    ```
 
 3. Run tests

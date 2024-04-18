@@ -1,4 +1,4 @@
-FILE_NOT_FOUND_MESSAGE = ('The application did not find a matching file or the file could not be parsed.\n'
+FILE_NOT_FOUND_MESSAGE = ('The application did not find a matching source of ids or the source could not be parsed.\n'
                           'Contact the application administrator.')
 
 IDS_NOT_FOUND = 'No ids found in the file.'

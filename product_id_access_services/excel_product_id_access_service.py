@@ -13,10 +13,10 @@ class ExcelProductIDAccessService(ProductIDAccessService):
 
     def get_excel_file_path(self) -> str:
         args = sys.argv
-        if '--excel_file_path' not in args:
+        if '--ids_source' not in args:
             excel_file_path = DEFAULT_EXCEL_FILE_PATH
         else:
-            excel_file_path_index = args.index("--excel_file_path") + 1
+            excel_file_path_index = args.index("--ids_source") + 1
             excel_file_path = args[excel_file_path_index]
         self.source = excel_file_path
         return excel_file_path
