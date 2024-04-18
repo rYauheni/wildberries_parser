@@ -21,8 +21,7 @@ def main():
     app_state_service.create_app_state_data()
     products_ids = get_products_ids(prodict_service=product_id_access_service,
                                     notification_manager=notification_manager)
-    # default_last_update = app_state_service.set_default_last_update()  # Enable for prod.
-    default_last_update = '2024-04-04T13:06:31Z'  # Enable for dev only.
+    default_last_update = app_state_service.set_default_last_update()
     for pid in products_ids:
         product = Product(id=pid)
 

@@ -1,8 +1,9 @@
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from app_state_data_service.app_state_data_service import AppStateDataService
+from settings import PRODUCTION
 
 
 class JSONAppStateDataService(AppStateDataService):
@@ -32,6 +33,9 @@ class JSONAppStateDataService(AppStateDataService):
     def set_default_last_update() -> str:
         current_datetime = datetime.now(timezone.utc)
         formatted_datetime = current_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
+        if not PRODUCTION:
+            modified_datetime = current_datetime - timedelta(days=4)
+            formatted_datetime = modified_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
         return formatted_datetime
 
     def _load_app_state_data(self):
