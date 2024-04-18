@@ -25,9 +25,9 @@ def main():
     for pid in products_ids:
         product = Product(id=pid)
 
-        if not app_state_service.get_app_state_data(pid=product.id):
-            app_state_service.set_app_state_data(pid=product.id, last_update=default_last_update)
-        product.last_update = app_state_service.get_app_state_data(pid=product.id)
+        if not app_state_service.get_product_data(pid=product.id):
+            app_state_service.set_product_data(pid=product.id, last_update=default_last_update)
+        product.last_update = app_state_service.get_product_data(pid=product.id)
 
         try:
             product.parse_product_data()
@@ -51,8 +51,8 @@ def main():
         except NotificationError:
             logger.error(f'Product {product.id}. Messages did not be sent.')
         else:
-            app_state_service.update_app_state_data(pid=product.id,
-                                                    last_update=product.last_update)
+            app_state_service.update_product_data(pid=product.id,
+                                                  last_update=product.last_update)
 
 
 if __name__ == '__main__':

@@ -15,17 +15,17 @@ class CSVAppStateDataService(AppStateDataService):
                 writer = csv.writer(file)
                 writer.writerow(['pid', 'last_update'])
 
-    def set_app_state_data(self, pid: int, last_update: str):
+    def set_product_data(self, pid: int, last_update: str):
 
-        if self.get_app_state_data(pid=pid):
-            self.update_app_state_data(pid=pid, last_update=last_update)
+        if self.get_product_data(pid=pid):
+            self.update_product_data(pid=pid, last_update=last_update)
             return
 
         with open(self.data_file, mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([pid, last_update])
 
-    def get_app_state_data(self, pid: int) -> (str, None):
+    def get_product_data(self, pid: int) -> (str, None):
         try:
             with open(self.data_file, mode='r', newline='') as file:
                 reader = csv.reader(file)
@@ -35,7 +35,7 @@ class CSVAppStateDataService(AppStateDataService):
         except IndexError:
             return None
 
-    def update_app_state_data(self, pid: int, last_update: str):
+    def update_product_data(self, pid: int, last_update: str):
         rows = []
         with open(self.data_file, mode='r', newline='') as file:
             reader = csv.reader(file)

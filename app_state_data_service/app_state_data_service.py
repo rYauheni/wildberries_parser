@@ -7,15 +7,15 @@ class AppStateDataService(ABC):
         pass
 
     @abstractmethod
-    def set_app_state_data(self, pid: int, last_update: str):
+    def set_product_data(self, pid: int, last_update: str):
         pass
 
     @abstractmethod
-    def get_app_state_data(self, pid: int) -> str:
+    def get_product_data(self, pid: int) -> str:
         pass
 
     @abstractmethod
-    def update_app_state_data(self, pid: int, last_update: str):
+    def update_product_data(self, pid: int, last_update: str):
         pass
 
     @staticmethod

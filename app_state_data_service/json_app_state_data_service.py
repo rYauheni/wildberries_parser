@@ -15,16 +15,16 @@ class JSONAppStateDataService(AppStateDataService):
             with open(self.data_file, mode='w') as file:
                 json.dump({}, file)
 
-    def set_app_state_data(self, pid: int, last_update: str):
+    def set_product_data(self, pid: int, last_update: str):
         app_state_data = self._load_app_state_data()
         app_state_data[str(pid)] = last_update
         self._save_app_state_data(app_state_data)
 
-    def get_app_state_data(self, pid: int) -> str:
+    def get_product_data(self, pid: int) -> str:
         app_state_data = self._load_app_state_data()
         return app_state_data.get(str(pid))
 
-    def update_app_state_data(self, pid: int, last_update: str):
+    def update_product_data(self, pid: int, last_update: str):
         app_state_data = self._load_app_state_data()
         app_state_data[str(pid)] = last_update
         self._save_app_state_data(app_state_data)
