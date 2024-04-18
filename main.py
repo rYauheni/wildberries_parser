@@ -29,18 +29,7 @@ def main():
             app_state_service.set_product_data(pid=product.id, last_update=default_last_update)
         product.last_update = app_state_service.get_product_data(pid=product.id)
 
-        try:
-            product.parse_product_data()
-            logger.info(f'Product {product.id} has been parsed.')
-        except ProductDataError:
-            product.status = Status.PRODUCT_DNF
-            logger.error(f'Product {product.id} data not found or could not be parsed.')
-        except FeedbackDataError:
-            product.status = Status.FEEDBACK_DNF
-            logger.error(f'Product {product.id} feedback data not found or could not be parsed.')
-        except Exception as e:
-            product.status = Status.UNKNOWN_E
-            logger.error(f'Product {product.id} raised exception {e}.')
+        product.handle_product_data_parser()
 
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()

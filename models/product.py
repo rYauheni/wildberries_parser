@@ -3,6 +3,7 @@ from enum import Enum
 import requests
 
 from exceptions.exceptions import ProductDataError, FeedbackDataError
+from logger_utils.logger_utils import logger
 from models.feedback import Feedback
 
 
@@ -76,3 +77,17 @@ class Product:
             self.get_negative_feedbacks(feedbacks_urls=feedbacks_urls)
         except Exception:
             raise FeedbackDataError
+
+    def handle_product_data_parser(self):
+        try:
+            self.parse_product_data()
+            logger.info(f'Product {self.id} has been parsed.')
+        except ProductDataError:
+            self.status = Status.PRODUCT_DNF
+            logger.error(f'Product {self.id} data not found or could not be parsed.')
+        except FeedbackDataError:
+            self.status = Status.FEEDBACK_DNF
+            logger.error(f'Product {self.id} feedback data not found or could not be parsed.')
+        except Exception as e:
+            self.status = Status.UNKNOWN_E
+            logger.error(f'Product {self.id} raised exception {e}.')
