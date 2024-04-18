@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
+from app_state_data_service.app_state_data_service import AppStateDataService
 from exceptions.exceptions import NotificationError
+from logger_utils.logger_utils import logger
 from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 
@@ -87,3 +89,13 @@ class MessagesList:
                 notification_manager.send_message(message=message.text)
             except NotificationError:
                 raise
+
+    def handle_messages_sender(self, notification_manager: NotificationManager, app_state_service: AppStateDataService):
+        try:
+            self.send_messages(notification_manager=notification_manager)
+            logger.info(f'Product {self.product.id}. Messages ware sent successfully.')
+        except NotificationError:
+            logger.error(f'Product {self.product.id}. Messages did not be sent.')
+        else:
+            app_state_service.update_product_data(pid=self.product.id,
+                                                  last_update=self.product.last_update)

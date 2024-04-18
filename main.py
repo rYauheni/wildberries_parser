@@ -33,15 +33,8 @@ def main():
 
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()
-
-        try:
-            messages_list.send_messages(notification_manager=notification_manager)
-            logger.info(f'Product {product.id}. Messages ware sent successfully.')
-        except NotificationError:
-            logger.error(f'Product {product.id}. Messages did not be sent.')
-        else:
-            app_state_service.update_product_data(pid=product.id,
-                                                  last_update=product.last_update)
+        messages_list.handle_messages_sender(notification_manager=notification_manager,
+                                             app_state_service=app_state_service)
 
 
 if __name__ == '__main__':
