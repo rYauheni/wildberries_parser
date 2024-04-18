@@ -20,5 +20,5 @@ class AppStateDataService(ABC):
 
     @staticmethod
     @abstractmethod
-    def set_default_last_update() -> str:
+    def create_default_last_update() -> str:
         pass

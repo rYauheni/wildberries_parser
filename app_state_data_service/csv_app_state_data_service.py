@@ -49,7 +49,7 @@ class CSVAppStateDataService(AppStateDataService):
             writer.writerows(rows)
 
     @staticmethod
-    def set_default_last_update() -> str:
+    def create_default_last_update() -> str:
         current_datetime = datetime.now(timezone.utc)
         formatted_datetime = current_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
         return formatted_datetime

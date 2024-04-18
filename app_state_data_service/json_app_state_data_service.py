@@ -30,7 +30,7 @@ class JSONAppStateDataService(AppStateDataService):
         self._save_app_state_data(app_state_data)
 
     @staticmethod
-    def set_default_last_update() -> str:
+    def create_default_last_update() -> str:
         current_datetime = datetime.now(timezone.utc)
         formatted_datetime = current_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
         if not PRODUCTION:
