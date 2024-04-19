@@ -5,8 +5,8 @@ from models.message import MessagesList
 from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 from notification_services.telegram_notification_service import TelegramNotificationService
-from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
-from product_id_access_services.product_id_access_utils import get_products_ids
+from product_id_extract_services.excel_product_id_extract_service import ExcelProductIDExtractService
+from product_id_extract_services.product_id_extract_utils import get_products_ids
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     notification_services = [TelegramNotificationService()]
     notification_manager = NotificationManager(services=notification_services)
 
-    product_id_access_service = ExcelProductIDAccessService()
+    product_id_access_service = ExcelProductIDExtractService()
 
     app_state_service.create_app_state_data()
     products_ids = get_products_ids(product_service=product_id_access_service,

@@ -2,10 +2,10 @@ from exceptions.error_messages import IDS_NOT_FOUND, FILE_NOT_FOUND_MESSAGE
 from exceptions.exceptions import FileError
 from logger_utils.logger_utils import logger
 from notification_services.notification_manager import NotificationManager
-from product_id_access_services.excel_product_id_access_service import ExcelProductIDAccessService
+from product_id_extract_services.excel_product_id_extract_service import ExcelProductIDExtractService
 
 
-def get_products_ids(product_service: ExcelProductIDAccessService, notification_manager: NotificationManager) -> list:
+def get_products_ids(product_service: ExcelProductIDExtractService, notification_manager: NotificationManager) -> list:
     products_ids = []
     try:
         products_ids = product_service.get_ids()

@@ -3,11 +3,11 @@ import sys
 import openpyxl
 
 from exceptions.exceptions import FileError
-from product_id_access_services.product_id_access_service import ProductIDAccessService
+from product_id_extract_services.product_id_extract_service import ProductIDExtractService
 from settings import DEFAULT_EXCEL_FILE_PATH
 
 
-class ExcelProductIDAccessService(ProductIDAccessService):
+class ExcelProductIDExtractService(ProductIDExtractService):
     ids: list[int]
     source: str
 
