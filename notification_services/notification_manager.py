@@ -2,8 +2,10 @@ from notification_services.notification_service import NotificationService
 
 
 class NotificationManager:
-    def __init__(self):
+    def __init__(self, services=None):
         self.services: list = []
+        if services:
+            self.add_services(services=services)
 
     def add_services(self, services):
         for service in services:
