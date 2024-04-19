@@ -1,4 +1,4 @@
-class FileError(Exception):
+class SourceError(Exception):
 
     def __init__(self, *args):
         if args:
