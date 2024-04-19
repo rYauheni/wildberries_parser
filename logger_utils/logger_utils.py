@@ -1,7 +1,8 @@
+import inspect
 import logging
 
 
-class ColoredFormatter(logging.Formatter):
+class CustomFormatter(logging.Formatter):
     COLORS = {'DEBUG': '\033[94m', 'INFO': '\033[92m', 'WARNING': '\033[93m', 'ERROR': '\033[91m',
               'CRITICAL': '\033[95m'}
 
@@ -14,7 +15,7 @@ class ColoredFormatter(logging.Formatter):
 
 logging.basicConfig(
     level=logging.DEBUG,
-    handlers=[logging.StreamHandler()]
 )
-logging.getLogger().handlers[0].setFormatter(ColoredFormatter())
-logger = logging.getLogger(__name__)
+logging.getLogger().handlers[0].setFormatter(CustomFormatter())
+
+logger = logging.getLogger()
