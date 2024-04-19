@@ -1,19 +1,22 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 from exceptions.exceptions import FeedbackDataError
+from settings import DATETIME_TEMPLATE
 
 
 @dataclass
 class Feedback:
     mark: int = None
     text: str = None
-    date: str = None
+    date: float = None
 
     def get_feedback_data_from_json(self, feedback_detail):
         try:
             self.mark = feedback_detail['productValuation']
             self.text = feedback_detail['text']
-            self.date = feedback_detail['createdDate']
+            fb_date = feedback_detail['createdDate']
+            self.date = datetime.strptime(fb_date, DATETIME_TEMPLATE).timestamp()
         except KeyError:
             raise FeedbackDataError
 

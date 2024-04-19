@@ -22,7 +22,7 @@ class Product:
     root: int = None
     name: str = None
     rating: float = None
-    last_update: str = None
+    last_update: float = None
     feedbacks: list[Feedback] = field(default_factory=list)
 
     def get_product_data_from_json(self, product_detail):

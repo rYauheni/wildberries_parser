@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime, timezone, timedelta
+from time import time
 
 from app_state_data_service.app_state_data_service import AppStateDataService
 from settings import PRODUCTION
@@ -15,7 +16,7 @@ class JSONAppStateDataService(AppStateDataService):
             with open(self.data_file, mode='w') as file:
                 json.dump({}, file)
 
-    def set_product_data(self, pid: int, last_update: str):
+    def set_product_data(self, pid: int, last_update: float):
         app_state_data = self._load_app_state_data()
         app_state_data[str(pid)] = last_update
         self._save_app_state_data(app_state_data)
@@ -24,19 +25,17 @@ class JSONAppStateDataService(AppStateDataService):
         app_state_data = self._load_app_state_data()
         return app_state_data.get(str(pid))
 
-    def update_product_data(self, pid: int, last_update: str):
+    def update_product_data(self, pid: int, last_update: float):
         app_state_data = self._load_app_state_data()
         app_state_data[str(pid)] = last_update
         self._save_app_state_data(app_state_data)
 
     @staticmethod
-    def create_default_last_update() -> str:
-        current_datetime = datetime.now(timezone.utc)
-        formatted_datetime = current_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
+    def create_default_last_update() -> float:
+        last_update = time()
         if not PRODUCTION:
-            modified_datetime = current_datetime - timedelta(days=4)
-            formatted_datetime = modified_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
-        return formatted_datetime
+            last_update = last_update - (4 * 24 * 60 * 60)
+        return last_update
 
     def _load_app_state_data(self):
         if not os.path.exists(self.data_file):
