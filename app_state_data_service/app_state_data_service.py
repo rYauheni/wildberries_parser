@@ -7,7 +7,7 @@ class AppStateDataService(ABC):
         pass
 
     @abstractmethod
-    def set_product_data(self, pid: int, last_update: str):
+    def set_product_data(self, pid: int, last_update: float):
         pass
 
     @abstractmethod
@@ -15,7 +15,7 @@ class AppStateDataService(ABC):
         pass
 
     @abstractmethod
-    def update_product_data(self, pid: int, last_update: str):
+    def update_product_data(self, pid: int, last_update: float):
         pass
 
     @staticmethod
