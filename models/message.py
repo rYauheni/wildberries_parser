@@ -95,7 +95,7 @@ class MessagesList:
             self.send_messages(notification_manager=notification_manager)
             logger.info(f'Product {self.product.id}. Messages ware sent successfully.')
         except NotificationError:
-            logger.error(f'Product {self.product.id}. Messages did not be sent.')
+            logger.critical(f'Product {self.product.id}. Messages did not be sent.')
         else:
             app_state_service.update_product_data(pid=self.product.id,
                                                   last_update=self.product.last_update)
