@@ -12,7 +12,7 @@ from product_id_access_services.product_id_access_utils import get_products_ids
 def main():
     app_state_service = JSONAppStateDataService()
 
-    notification_services = (TelegramNotificationService(),)
+    notification_services = [TelegramNotificationService()]
     notification_manager = NotificationManager()
     notification_manager.add_services(services=notification_services)
 
