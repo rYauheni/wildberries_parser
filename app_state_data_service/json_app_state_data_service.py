@@ -9,6 +9,7 @@ from settings import PRODUCTION
 
 class JSONAppStateDataService(AppStateDataService):
     def __init__(self, data_file='condition_data.json'):
+        super().__init__()
         self.data_file = data_file
 
     def create_app_state_data(self):
