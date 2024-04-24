@@ -43,13 +43,13 @@ ___
    for Windows:
 
    ```commandline
-   python main.py --ids-file_path <file_path>
+   python main.py --ids-file-path <file_path>
    ```
 
    for Linux:
 
    ```commandline
-   python3 main.py --ids-file_path <file_path>
+   python3 main.py --ids-file-path <file_path>
    ```
 
 3. Run tests
