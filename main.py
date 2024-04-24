@@ -4,6 +4,7 @@ from models.message import MessagesList
 from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 from notification_services.telegram_notification_service import TelegramNotificationService
+from parser.product_parser import ProductParser
 from product_id_extract_services.excel_product_id_extract_service import ExcelProductIDExtractService
 from product_id_extract_services.file_provider import FileProvider
 from product_id_extract_services.product_id_extract_utils import get_products_ids
@@ -22,13 +23,25 @@ def main():
     products_ids = get_products_ids(product_service=product_id_extract_service)
     default_last_update = app_state_service.create_default_last_update()
     for pid in products_ids:
-        product = Product(id=pid)
 
-        if not app_state_service.get_product_data(pid=product.id):
-            app_state_service.set_product_data(pid=product.id, last_update=default_last_update)
-        product.last_update = app_state_service.get_product_data(pid=product.id)
+        if not app_state_service.get_product_data(pid=pid):
+            app_state_service.set_product_data(pid=pid, last_update=default_last_update)
+        last_update = float(app_state_service.get_product_data(pid=pid))
 
-        product.handle_product_data_parser()
+
+
+        product_parser = ProductParser(pid=pid, last_update=last_update)
+        product = Product(
+            id=pid,
+            url=product_parser.product_url,
+            root=product_parser.product_root_from_json(),
+            name=product_parser.product_name_from_json(),
+            rating=product_parser.product_rating_from_json(),
+            feedbacks=product_parser.parse_product_feedbacks(),
+            last_update=product_parser.product_last_update # last_update must necessarily come after feedbacks, otherwise there is a violation of logic and incorrect data
+        )
+
+        # product.handle_product_data_parser() TODO
 
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()
