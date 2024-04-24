@@ -5,6 +5,7 @@ from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
 from notification_services.telegram_notification_service import TelegramNotificationService
 from product_id_extract_services.excel_product_id_extract_service import ExcelProductIDExtractService
+from product_id_extract_services.file_provider import FileProvider
 from product_id_extract_services.product_id_extract_utils import get_products_ids
 
 
@@ -14,7 +15,8 @@ def main():
     notification_services = [TelegramNotificationService()]
     notification_manager = NotificationManager(services=notification_services)
 
-    product_id_extract_service = ExcelProductIDExtractService()
+    file_path = FileProvider().get_file_path()
+    product_id_extract_service = ExcelProductIDExtractService(excel_file_path=file_path)
 
     app_state_service.create_app_state_data()
     products_ids = get_products_ids(product_service=product_id_extract_service)
