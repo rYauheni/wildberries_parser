@@ -17,8 +17,7 @@ def main():
     product_id_extract_service = ExcelProductIDExtractService()
 
     app_state_service.create_app_state_data()
-    products_ids = get_products_ids(product_service=product_id_extract_service,
-                                    notification_manager=notification_manager)
+    products_ids = get_products_ids(product_service=product_id_extract_service)
     default_last_update = app_state_service.create_default_last_update()
     for pid in products_ids:
         product = Product(id=pid)
