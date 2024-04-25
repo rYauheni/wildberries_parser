@@ -35,7 +35,7 @@ class JSONAppStateDataService(AppStateDataService):
     def create_default_last_update() -> float:
         last_update = time()
         if not PRODUCTION:
-            last_update = last_update - (4 * 24 * 60 * 60)
+            last_update = last_update - (6 * 24 * 60 * 60)
         return last_update
 
     def _load_app_state_data(self):

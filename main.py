@@ -1,10 +1,8 @@
 from app_state_data_service.json_app_state_data_service import JSONAppStateDataService
 from exceptions.exceptions import NotificationError
-from logger_utils.logger_utils import logger
 from models.message import MessagesList
-from models.product import Product, Status
 from notification_services.notification_manager import NotificationManager
-from notification_services.telegram_notification_service import TelegramNotificationService
+from notification_services.telegram.telegram_notification_service import TelegramNotificationService
 from parser.product_parser import create_product
 from product_id_extract_services.excel_product_id_extract_service import ExcelProductIDExtractService
 from product_id_extract_services.file_provider import FileProvider
