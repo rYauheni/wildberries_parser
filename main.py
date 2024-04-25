@@ -1,4 +1,5 @@
 from app_state_data_service.json_app_state_data_service import JSONAppStateDataService
+from exceptions.exceptions import NotificationError
 from logger_utils.logger_utils import logger
 from models.message import MessagesList
 from models.product import Product, Status
@@ -32,9 +33,13 @@ def main():
 
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()
-        # TODO: SRP disturb: update app state does not be in this method
-        messages_list.handle_messages_sender(notification_manager=notification_manager,
-                                             app_state_service=app_state_service)
+
+        try:
+            messages_list.handle_messages_sender(notification_manager=notification_manager)
+        except NotificationError:
+            pass
+        else:
+            app_state_service.update_product_data(pid=product.id, last_update=product.last_update)
 
 
 if __name__ == '__main__':
