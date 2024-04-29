@@ -83,8 +83,13 @@ class MessagesList:
                 message.set_e_message_for_for_unknown_e()
         self.messages_list.append(message)
 
+
+class MessagesSender:
+    def __init__(self, messages_list: MessagesList):
+        self.messages_list = messages_list
+
     def send_messages(self, notification_manager: NotificationManager):
-        for message in self.messages_list:
+        for message in self.messages_list.messages_list:
             try:
                 notification_manager.send_message(message=message.text)
             except NotificationError:
@@ -93,7 +98,7 @@ class MessagesList:
     def handle_messages_sender(self, notification_manager: NotificationManager):
         try:
             self.send_messages(notification_manager=notification_manager)
-            logger.info(f'Product {self.product.id}. Messages ware sent successfully.')
+            logger.info(f'Product {self.messages_list.product.id}. Messages ware sent successfully.')
         except NotificationError:
-            logger.critical(f'Product {self.product.id}. Messages did not be sent.')
+            logger.critical(f'Product {self.messages_list.product.id}. Messages did not be sent.')
             raise

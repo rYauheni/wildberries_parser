@@ -1,6 +1,6 @@
 from app_state_data_service.json_app_state_data_service import JSONAppStateDataService
 from exceptions.exceptions import NotificationError
-from models.message import MessagesList
+from models.message import MessagesList, MessagesSender
 from notification_services.notification_manager import NotificationManager
 from notification_services.telegram.telegram_notification_service import TelegramNotificationService
 from parser.product_parser import create_product
@@ -32,14 +32,14 @@ def main():
         messages_list = MessagesList(product=product)
         messages_list.fill_messages_list()
 
+        messages_sender = MessagesSender(messages_list=messages_list)
+
         try:
-            messages_list.handle_messages_sender(notification_manager=notification_manager)
+            messages_sender.handle_messages_sender(notification_manager=notification_manager)
         except NotificationError:
             pass
         else:
             app_state_service.update_product_data(pid=product.id, last_update=product.last_update)
-
-    notification_manager.send_message(message='===END===')
 
 
 if __name__ == '__main__':
