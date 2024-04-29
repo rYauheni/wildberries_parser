@@ -8,6 +8,7 @@ import requests
 from dotenv import load_dotenv
 
 import exceptions.error_messages as em
+# from notification_services.telegram.telegram_notification_service import TelegramNotificationService
 
 
 class CustomFormatter(logging.Formatter):
@@ -38,6 +39,9 @@ class CustomHandler(logging.StreamHandler):
         url = f'https://api.telegram.org/bot{token}/sendMessage'
         params = {'chat_id': chat_id, 'text': message}
         requests.post(url, params=params)
+
+        # notification_service = TelegramNotificationService()
+        # notification_service.send_message(message=message)
 
 
 class Signal(Enum):

@@ -21,7 +21,7 @@ def handle_rate_limit(retries: int = 3, delay: int = 40):
                 try:
                     response = func(*args, **kwargs)
                     if response.status_code == 429:
-                        logger.warning('Rate limited. Waiting 40 seconds before retrying...')
+                        logger.warning(f'Rate limited. Waiting {delay} seconds before retrying...')
                         time.sleep(delay)
                         retries_left -= 1
                     elif response.status_code != 200:
@@ -30,7 +30,6 @@ def handle_rate_limit(retries: int = 3, delay: int = 40):
                         logger.info('Message was sent successfully.')
                         return response
                 except Exception as e:
-                    print(e)
                     raise NotificationError("Exceeded maximum retries")
         return wrapper
     return decorator
