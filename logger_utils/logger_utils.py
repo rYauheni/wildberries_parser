@@ -30,6 +30,11 @@ class CustomHandler(logging.StreamHandler):
             message = SignalToMessageConverter().convert(signal=record.signal)
             self.notify(message=message)
 
+        if record.levelno == logging.CRITICAL:
+            with open('critical.log', 'a') as file:
+                log_entry = f'{record.asctime} - {record.filename} - {record.message}'
+                file.write(log_entry + '\n')
+
     @staticmethod
     def notify(message):
         # DRY DISTURBER
