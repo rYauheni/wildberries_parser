@@ -39,6 +39,8 @@ def main():
         else:
             app_state_service.update_product_data(pid=product.id, last_update=product.last_update)
 
+    notification_manager.send_message(message='===END===')
+
 
 if __name__ == '__main__':
     main()
