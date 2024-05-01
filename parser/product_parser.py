@@ -66,7 +66,7 @@ def parse_product_data(product_url: str):
     return product_detail.json()
 
 
-def product_root_from_json(product_detail):
+def product_root_from_json(product_detail) -> int:
     try:
         product_root = product_detail['data']['products'][0]['root']
     except KeyError:
@@ -74,7 +74,7 @@ def product_root_from_json(product_detail):
     return product_root
 
 
-def product_name_from_json(product_detail):
+def product_name_from_json(product_detail) -> str:
     try:
         product_name = (str(product_detail['data']['products'][0]['brand']) + ' ' +
                         str(product_detail['data']['products'][0]['name']))
@@ -83,7 +83,7 @@ def product_name_from_json(product_detail):
     return product_name
 
 
-def product_rating_from_json(product_detail):
+def product_rating_from_json(product_detail) -> float:
     try:
         product_rating = product_detail['data']['products'][0]['reviewRating']
     except KeyError:
@@ -91,7 +91,7 @@ def product_rating_from_json(product_detail):
     return product_rating
 
 
-def parse_product_feedbacks(feedbacks_urls, product_last_update):
+def parse_product_feedbacks(feedbacks_urls: list[str], product_last_update: float) -> list[Feedback]:
     try:
         negative_feedbacks = get_negative_feedbacks(feedbacks_urls=feedbacks_urls,
                                                     product_last_update=product_last_update)
@@ -105,7 +105,7 @@ def get_feedbacks_urls(product_root) -> list[str]:
     return feedbacks_urls
 
 
-def get_negative_feedbacks(feedbacks_urls, product_last_update):
+def get_negative_feedbacks(feedbacks_urls: list[str], product_last_update: float) -> list[Feedback]:
     negative_feedbacks = []
     try:
         for url in feedbacks_urls:
@@ -122,7 +122,7 @@ def get_negative_feedbacks(feedbacks_urls, product_last_update):
         raise FeedbackDataError
 
 
-def update_product_last_update(n_feedbacks, product_last_update):
+def update_product_last_update(n_feedbacks: list, product_last_update: float) -> float:
     new_update = product_last_update
     for n_feedback in n_feedbacks:
         if n_feedback.date > new_update:
